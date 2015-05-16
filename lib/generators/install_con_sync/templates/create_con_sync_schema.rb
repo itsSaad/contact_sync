@@ -1,4 +1,4 @@
-class CreateContactsTable < ActiveRecord::Migration
+class CreateConSyncSchema < ActiveRecord::Migration
   def change
     create_table :contacts do |t|
       t.string :composite_name
