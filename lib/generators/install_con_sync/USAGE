@@ -1,0 +1,8 @@
+Description:
+    Explain the generator
+
+Example:
+    rails generate install_con_sync Thing
+
+    This will create:
+        what/will/it/create
