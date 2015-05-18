@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    con_sync (0.0.7)
+    con_sync (0.0.8)
       rails (~> 4.2.1)
 
 GEM
