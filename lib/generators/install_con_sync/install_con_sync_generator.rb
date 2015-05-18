@@ -12,4 +12,8 @@ class InstallConSyncGenerator < Rails::Generators::Base
   def  generate_migration
     migration_template "create_con_sync_schema.rb", "db/migrate/create_con_sync.rb"
   end
+
+  def generate_routes
+    route(File.read(File.join(File.dirname(__FILE__), 'templates/routes.rb') ))
+  end
 end
