@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     con_sync (0.0.8)
+      encrypted_strings (= 0.3.3)
+      global_phone (= 1.0.1)
       rails (~> 4.2.1)
 
 GEM
@@ -44,7 +46,9 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.0)
     builder (3.2.2)
+    encrypted_strings (0.3.3)
     erubis (2.7.0)
+    global_phone (1.0.1)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
