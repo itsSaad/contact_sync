@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    contact_sync (0.2.0)
+    contact_sync (0.2.1)
       encrypted_strings (= 0.3.3)
       global_phone (= 1.0.1)
       rails (~> 4.2.1)
