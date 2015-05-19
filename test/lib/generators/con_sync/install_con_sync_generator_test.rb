@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'generators/install_con_sync/install_con_sync_generator'
+require 'generators/install_contact_sync/install_contact_sync_generator'
 
-module ConSync
-  class InstallConSyncGeneratorTest < Rails::Generators::TestCase
-    tests InstallConSyncGenerator
+module ContactSync
+  class InstallContactSyncGeneratorTest < Rails::Generators::TestCase
+    tests InstallContactSyncGenerator
     destination Rails.root.join('tmp/generators')
     setup :prepare_destination
 

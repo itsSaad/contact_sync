@@ -1,7 +1,7 @@
-module ConSync
+module ContactSync
   module ActsAsSyncable
     def acts_as_syncable
-      include ConSync::Syncable
+      include ContactSync::Syncable
     end
   end
 end

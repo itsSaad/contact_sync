@@ -1,6 +1,6 @@
-require_dependency "con_sync/application_controller"
+require_dependency "contact_sync/application_controller"
 
-module ConSync
+module ContactSync
   class Api::UsersSyncController < ApplicationController
     def sync_contacts
       if params[:contacts] && (params[:contacts][:new] or params[:contacts][:modified] or params[:contacts][:deleted])

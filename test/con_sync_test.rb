@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class ConSyncTest < ActiveSupport::TestCase
+class ContactSyncTest < ActiveSupport::TestCase
   test "truth" do
-    assert_kind_of Module, ConSync
+    assert_kind_of Module, ContactSync
   end
 end

@@ -1,4 +1,4 @@
 # desc "Explaining what the task does"
-# task :con_sync do
+# task :contact_sync do
 #   # Task goes here
 # end

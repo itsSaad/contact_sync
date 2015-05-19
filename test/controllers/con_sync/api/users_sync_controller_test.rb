@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module ConSync
+module ContactSync
   class Api::UsersSyncControllerTest < ActionController::TestCase
     # test "the truth" do
     #   assert true

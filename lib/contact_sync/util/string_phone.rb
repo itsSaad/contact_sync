@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-module ConSync
+module ContactSync
   module StringPhone
     # extend ActiveSupport::Concern
     def extract_country_code
@@ -25,4 +25,4 @@ module ConSync
 end
 
 puts "Including StringPhoner Module to: '#{String.name}' class"
-String.send(:include, ConSync::StringPhone)
+String.send(:include, ContactSync::StringPhone)

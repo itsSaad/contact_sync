@@ -1,4 +1,4 @@
-module ConSync
+module ContactSync
   module ApplicationHelper
   end
 end

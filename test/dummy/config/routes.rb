@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
 
-  mount ConSync::Engine => "/con_sync"
+  mount ContactSync::Engine => "/contact_sync"
 end

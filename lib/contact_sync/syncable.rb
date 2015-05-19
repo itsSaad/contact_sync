@@ -1,4 +1,4 @@
-module ConSync
+module ContactSync
   module Syncable
     def phone_number
       return self.encrypted_number.try(:decrypt,:symmetric) || ""
@@ -10,6 +10,13 @@ module ConSync
       self.encrypted_number
     end
 
+    def complete_phone_number
+      if self.cc_prefix.blank?
+        "00#{self.phone_number}"
+      else
+        "+#{self.cc_prefix}#{self.phone_number}"
+      end
+    end
     def sync_contacts(contact_hash = {})
       result = {:new => {success:[], failed:[]}, modified: {success:[], failed:[]}, deleted: {success:[], failed:[]}}
       raise ArgumentError, "You need to provide contacts hash." if contact_hash.blank?
