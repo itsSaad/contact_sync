@@ -1,5 +1,6 @@
 require "con_sync/engine"
-require 'api_constraints'
+require 'con_sync/api_constraints'
+require 'con_sync/string_phone'
 module ConSync
   module ActsAsSyncable
     def acts_as_syncable

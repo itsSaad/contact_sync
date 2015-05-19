@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    con_sync (0.1.1)
+    con_sync (0.1.2)
       encrypted_strings (= 0.3.3)
       global_phone (= 1.0.1)
       rails (~> 4.2.1)
