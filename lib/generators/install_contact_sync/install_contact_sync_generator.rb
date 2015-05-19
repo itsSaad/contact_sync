@@ -30,4 +30,12 @@ class InstallContactSyncGenerator < Rails::Generators::Base
   RUBY
     end
   end
+
+  def generate_models
+    template "address.rb",  'app/models/address.rb'
+    template 'email.rb',    'app/models/email.rb'
+    template 'phone.rb',    'app/models/phone.rb'
+    template 'user.rb',     'app/models/user.rb'
+    template 'contact.rb',  'app/models/contact.rb'
+  end
 end

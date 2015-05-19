@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = ContactSync::VERSION
   s.authors     = ["Saad Masood"]
   s.email       = ["me@itssaad.com"]
-  s.homepage    = "http://github.com/itsSaad/c_sync"
-  s.summary     = "Summary of ContactSync."
-  s.description = "Description of ContactSync."
+  s.homepage    = "http://github.com/itsSaad/contacts_sync"
+  s.summary     = "Easy Contact Syncing API"
+  s.description = "Easy Contacts Syncing over API with encrypted contacts email and phone numbers"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
