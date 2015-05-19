@@ -10,8 +10,13 @@ class InstallContactSyncGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
 
   def  generate_migration
-    migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
-    migration_template "change_email_encrypted_from_emails.rb", "db/migrate/change_emails_schema.rb"
+    if self.class.migration_exists?('db/migrate', @migration_file_name)
+      migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
+    end
+
+    if self.class.migration_exists?('db/migrate', @migration_file_name)
+      migration_template "change_email_encrypted_from_emails.rb", "db/migrate/change_emails_schema.rb"
+    end
   end
 
   # def generate_global_phone_db
