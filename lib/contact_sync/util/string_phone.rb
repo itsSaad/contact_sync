@@ -24,5 +24,4 @@ module ContactSync
   end
 end
 
-puts "Including StringPhoner Module to: '#{String.name}' class"
 String.send(:include, ContactSync::StringPhone)

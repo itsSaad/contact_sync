@@ -60,7 +60,6 @@ module ContactSync
           if ! theContact.blank?
             if !theContact.update_attributes(contact_params(con))
               result[:modified][:failed] << theContact.record_id
-              puts "Error Updating Contact."
             else
               # result[:modified][:success] << theContact.record_id
             end
