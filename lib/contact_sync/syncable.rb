@@ -93,12 +93,12 @@ module ContactSync
       end
 
       user_phones.each do |phone|
-        u = User.where(phone_number: phone.number.encrypt(:symmetric)).limit(1).first
-        matched_contacts << u unless u.blank?
+        u = User.where(encrypted_number: phone.number.encrypt(:symmetric)).limit(1).first
+        matched_contacts << u.id unless u.blank?
       end
       user_emails.each do |mail|
-        u = User.where(email: mail.email).limit(1).first
-        matched_contacts << u unless u.blank?
+        u = User.where(encrypted_email: mail.email.encrypt(:symmetric)).limit(1).first
+        matched_contacts << u.id unless u.blank?
       end
       return matched_contacts
     end

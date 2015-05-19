@@ -11,10 +11,7 @@ class InstallContactSyncGenerator < Rails::Generators::Base
 
   def  generate_migration
     migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
-  end
-
-  def generate_routes
-    route(File.read(File.join(File.dirname(__FILE__), 'templates/routes.rb') ))
+    migration_template "change_email_encrypted_from_emails.rb", "db/migrate/change_emails_schema.rb"
   end
 
   # def generate_global_phone_db
