@@ -16,4 +16,8 @@ class InstallConSyncGenerator < Rails::Generators::Base
   def generate_routes
     route(File.read(File.join(File.dirname(__FILE__), 'templates/routes.rb') ))
   end
+
+  # def generate_global_phone_db
+  #   copy_file "global_phone.json", "db/global_phone.json"
+  # end
 end
