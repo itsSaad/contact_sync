@@ -1,6 +1,5 @@
 = ContactSync
 
-[![Gem Version](https://badge.fury.io/rb/contact_sync.svg)](http://badge.fury.io/rb/contact_sync)
-
+{<img src="https://badge.fury.io/rb/contact_sync.svg" alt="Gem Version" />}[http://badge.fury.io/rb/contact_sync]
 
 This project rocks and uses MIT-LICENSE.
