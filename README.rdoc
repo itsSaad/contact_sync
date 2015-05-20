@@ -1,5 +1,6 @@
 = ContactSync
 
 {<img src="https://badge.fury.io/rb/contact_sync.svg" alt="Gem Version" />}[http://badge.fury.io/rb/contact_sync]
+{<img src="https://coveralls.io/repos/itsSaad/contacts_sync/badge.svg" alt="Coverage Status" />}[https://coveralls.io/r/itsSaad/contacts_sync]
 
 This project rocks and uses MIT-LICENSE.
