@@ -10,18 +10,15 @@ class InstallContactSyncGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
 
   def  generate_migration
-    if self.class.migration_exists?('db/migrate', @migration_file_name)
+    binding.pry
+    if !self.class.migration_exists?('db/migrate', 'create_contact_sync_schema')
       migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
     end
 
-    if self.class.migration_exists?('db/migrate', @migration_file_name)
+    if !self.class.migration_exists?('db/migrate', 'change_emails_schema')
       migration_template "change_email_encrypted_from_emails.rb", "db/migrate/change_emails_schema.rb"
     end
   end
-
-  # def generate_global_phone_db
-  #   copy_file "global_phone.json", "db/global_phone.json"
-  # end
 
   def generate_encrypted_strings_config
     inject_into_file 'config/environments/development.rb', before: "end\n" do <<-'RUBY'
