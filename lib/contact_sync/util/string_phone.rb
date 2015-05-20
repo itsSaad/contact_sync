@@ -2,7 +2,6 @@ require 'active_support/concern'
 
 module ContactSync
   module StringPhone
-    alias_method :format_phone_number, :extract_country_code
     # extend ActiveSupport::Concern
     def extract_encrypted_string_from_phone
       return self.extract_country_code.last.encrypt(:symmetric)
@@ -26,6 +25,7 @@ module ContactSync
         return ["", string]
       end
     end
+    alias_method :format_phone_number, :extract_country_code
   end
 end
 
