@@ -14,10 +14,6 @@ class InstallContactSyncGenerator < Rails::Generators::Base
     if !self.class.migration_exists?('db/migrate', 'create_contact_sync_schema')
       migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
     end
-
-    if !self.class.migration_exists?('db/migrate', 'change_emails_schema')
-      migration_template "change_email_encrypted_from_emails.rb", "db/migrate/change_emails_schema.rb"
-    end
   end
 
   def generate_encrypted_strings_config
