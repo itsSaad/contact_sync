@@ -97,7 +97,7 @@ module ContactSync
         matched_contacts << u.id unless u.blank?
       end
       user_emails.each do |mail|
-        u = User.where(encrypted_email: mail.email.encrypt(:symmetric)).limit(1).first
+        u = User.where(email: mail.email).limit(1).first
         matched_contacts << u.id unless u.blank?
       end
       return matched_contacts
