@@ -6,6 +6,14 @@ class Phone < ActiveRecord::Base
     return self.encrypted_number.try(:decrypt,:symmetric) || ""
   end
 
+  def complete_phone_number
+    if self.cc_prefix.blank?
+      "0#{self.number}"
+    else
+      "+#{self.cc_prefix}#{self.number}"
+    end
+  end
+
   def number=(string)
     self.cc_prefix, num = string.extract_country_code
     self.encrypted_number = num.encrypt(:symmetric)
