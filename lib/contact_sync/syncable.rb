@@ -106,6 +106,7 @@ module ContactSync
         end
         other_contacts << aKon if !matches
       end
+      return {matched_users: matched_users, other_contacts: other_contacts}
     end
 
 
