@@ -89,27 +89,32 @@ module ContactSync
       other_contacts = []
 
       self.contacts.includes([:emails, :phones]) do |aKon|
+        #Check Phones to Match existing users.
         aKon.phones.each do |ph|
           matches = false
+          binding.pry
           u = User.where(encrypted_number: ph.number.encrypt(:symmetric)).limit(1).first
           if !u.blank?
             matches = true
+            binding.pry
             matched_users << {user: u.id, phone: ph.id, contact: aKon.id}
           end
         end
+        #Check Emails to Match existing users.
         aKon.emails.each do |em|
+          binding.pry
           u = User.where(email: mail.email).limit(1).first
           if !u.blank?
+            binding.pry
             matches = true
             matched_users << {user: u.id, email: em.id, contact: aKon.id}
           end
         end
+        binding.pry
         other_contacts << aKon if !matches
       end
       return {matched_users: matched_users, other_contacts: other_contacts}
     end
-
-
 
     # def matched_contacts
     #   matched_contacts = []
