@@ -83,26 +83,56 @@ module ContactSync
       return result
     end
 
-    def matched_contacts
-      matched_contacts = []
-      user_phones = []
-      user_emails = []
-      self.contacts.each do |con|
-        user_phones.concat con.phones
-        user_emails.concat con.emails
-      end
 
-      user_phones.each do |phone|
-        u = User.where(encrypted_number: phone.number.encrypt(:symmetric)).limit(1).first
-        matched_contacts << u.id unless u.blank?
+    def matched_contacts
+      matched_users = []
+      other_contacts = []
+
+      self.contacts.includes([:emails, :phones]) do |aKon|
+        aKon.phones.each do |ph|
+          matches = false
+          u = User.where(encrypted_number: ph.number.encrypt(:symmetric)).limit(1).first
+          if !u.blank?
+            matches = true
+            matched_users << {user: u.id, phone: ph.id, contact: aKon.id}
+          end
+        end
+        aKon.emails.each do |em|
+          u = User.where(email: mail.email).limit(1).first
+          if !u.blank?
+            matches = true
+            matched_users << {user: u.id, email: em.id, contact: aKon.id}
+          end
+        end
+        other_contacts << aKon if !matches
       end
-      user_emails.each do |mail|
-        u = User.where(email: mail.email).limit(1).first
-        matched_contacts << u.id unless u.blank?
-      end
-      return matched_contacts
     end
 
+
+
+    # def matched_contacts
+    #   matched_contacts = []
+    #   user_phones = []
+    #     user_emails = []
+    #   self.contacts.each do |con|
+    #     user_phones.concat con.phones
+    #     user_emails.concat con.emails
+    #   end
+    #
+    #   user_phones.each do |phone|
+    #     u = User.where(encrypted_number: phone.number.encrypt(:symmetric)).limit(1).first
+    #     matched_contacts << u.id unless u.blank?
+    #   end
+    #   user_emails.each do |mail|
+    #     u = User.where(email: mail.email).limit(1).first
+    #     if !u.blank?
+    #       matched_contacts << u.id
+    #     end
+    #   end
+    #   other_contacts = self.contacts.collect(&:id) &
+    #   return {app_users: matched_contacts, other_users: self.contacts}
+    # end
+    #
     private
     def contact_params(aContact)
       aContact.permit(:composite_name, :first_name, :middle_name, :last_name, :prefix, :suffix, :nickname, :job_title, :department, :organization, :birthdate, :note, :creation_date, :modification_date, :record_id)
