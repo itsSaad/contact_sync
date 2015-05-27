@@ -18,9 +18,9 @@ module ContactSync
       end
     end
     def sync_contacts(contact_hash = {})
-      result = {:new => {success:[], failed:[]}, modified: {success:[], failed:[]}, deleted: {success:[], failed:[]}}
+      result = {:new => {success:[], failed:[], duplicate: []}, modified: {success:[], failed:[]}, deleted: {success:[], failed:[]}}
       raise ArgumentError, "You need to provide contacts hash." if contact_hash.blank?
-
+      raise ArgumentError, "You need to provide Device Identifier as deviceID" if contact_hash[:device_id].blank?
       ##########################################################################
       #########################Create new Contacts##############################
       if !contact_hash[:new].blank?
@@ -31,23 +31,28 @@ module ContactSync
 
           aContact.delete :phones
           aContact.delete :emails
-
-          newContact = Contact.new(contact_params(aContact))
-          if phones
-            phones.each do |aPhone|
-              newContact.phones.build(phone_params(aPhone))
+          begin
+            newContact = Contact.new(contact_params(aContact))
+            newContact.device_id = contact_hash[:device_id]
+            if phones
+              phones.each do |aPhone|
+                newContact.phones.build(phone_params(aPhone))
+              end
             end
-          end
-          if emails
-            emails.each do |anEmail|
-              newContact.emails.build(email_params(anEmail))
+            if emails
+              emails.each do |anEmail|
+                newContact.emails.build(email_params(anEmail))
+              end
             end
-          end
-          if newContact.save
-            # result[:new][:success] << newContact.record_id
-            self.contacts << newContact
-          else
-            result[:new][:failed] << newContact.record_id
+            if newContact.save
+              # result[:new][:success] << newContact.record_id
+              self.contacts << newContact
+            else
+              result[:new][:failed] << newContact.record_id
+            end
+          rescue ActiveRecord::RecordNotUnique => e
+            puts "Rescuing Duplicate Record"
+            result[:new][:duplicate] << newContact.record_id
           end
         end
       end
@@ -139,11 +144,11 @@ module ContactSync
     end
 
     def phone_params aPhone
-      aPhone.permit(:label, :number)
+      aPhone.permit(:label, :number, :encrypted_number, :cc_prefix)
     end
 
     def email_params anEmail
-      anEmail.permit(:label, :email)
+      anEmail.permit(:label, :email, :encrypted_email)
     end
 
     def after_contact_sync
