@@ -18,9 +18,9 @@ module ContactSync
       end
     end
     def sync_contacts(contact_hash = {})
-      result = {:new => {success:[], failed:[], duplicate: []}, modified: {success:[], failed:[]}, deleted: {success:[], failed:[]}}
+      result = {:new => {failed:[], duplicate: []}, modified: {failed:[]}, deleted: {failed:[]}}
       raise ArgumentError, "You need to provide contacts hash." if contact_hash.blank?
-      raise ArgumentError, "You need to provide Device Identifier as deviceID" if contact_hash[:device_id].blank?
+      # raise ArgumentError, "You need to provide Device Identifier as deviceID" if contact_hash[:device_id].blank?
       ##########################################################################
       #########################Create new Contacts##############################
       if !contact_hash[:new].blank?
@@ -33,7 +33,7 @@ module ContactSync
           aContact.delete :emails
           begin
             newContact = Contact.new(contact_params(aContact))
-            newContact.device_id = contact_hash[:device_id]
+            # newContact.device_id = contact_hash[:device_id]
             if phones
               phones.each do |aPhone|
                 newContact.phones.build(phone_params(aPhone))
