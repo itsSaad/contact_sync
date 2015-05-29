@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    contact_sync (1.4.0)
+    contact_sync (1.4.1)
       encrypted_strings (= 0.3.3)
       global_phone (= 1.0.1)
       pry-rails

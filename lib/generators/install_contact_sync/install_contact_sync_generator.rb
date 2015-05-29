@@ -10,11 +10,9 @@ class InstallContactSyncGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
 
   def  generate_migration
-    binding.pry
     if !self.class.migration_exists?('db/migrate', 'create_contact_sync_schema')
       migration_template "create_contact_sync_schema.rb", "db/migrate/create_contact_sync_schema.rb"
     end
-    binding.pry
 
     if !self.class.migration_exists?('db/migrate', 'remove_device_id_from_contacts')
       migration_template "remove_device_id_from_contacts.rb", "db/migrate/remove_device_id_from_contacts.rb"
