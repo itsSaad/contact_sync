@@ -14,6 +14,9 @@ module ContactSync
       end
       if string[0] == "+"
         breakdown = GlobalPhone.parse(string)
+        if breakdown.nil?
+          return ["", string]
+        end
         prefix = breakdown.country_code
         num = breakdown.national_string
         return [prefix,num]
