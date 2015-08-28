@@ -28,31 +28,32 @@ module ContactSync
         contacts.each do |aContact|
           phones = aContact[:phones]
           emails = aContact[:emails]
-
           aContact.delete :phones
           aContact.delete :emails
+          newContact = Contact.new(contact_params(aContact))
           begin
-            newContact = Contact.new(contact_params(aContact))
+            # newContact = Contact.new(contact_params(aContact))
             # newContact.device_id = contact_hash[:device_id]
-            if phones
+            if phones && phones.class == Array
               phones.each do |aPhone|
                 newContact.phones.build(phone_params(aPhone))
               end
             end
-            if emails
+            if emails && emails.class == Array
               emails.each do |anEmail|
                 newContact.emails.build(email_params(anEmail))
               end
             end
+            self.contacts << newContact
             if newContact.save
               # result[:new][:success] << newContact.record_id
-              self.contacts << newContact
             else
               result[:new][:failed] << newContact.record_id
             end
           rescue ActiveRecord::RecordNotUnique => e
             puts "Rescuing Duplicate Record"
             result[:new][:duplicate] << newContact.record_id
+            newContact.destroy
           end
         end
       end

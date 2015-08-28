@@ -7,6 +7,8 @@ class Contact < ActiveRecord::Base
   # has_many :social_profiles, :dependent => :delete_all
 
   belongs_to :user
+  validates_presence_of :user
+  validates :record_id, presence: true, numericality: {:greater_than => 0}
 
   # def jsonNotation
   #
