@@ -45,9 +45,11 @@ module ContactSync
               end
             end
             self.contacts << newContact
+            puts "Trying to save Contact: #{newContact}"
             if newContact.save
               # result[:new][:success] << newContact.record_id
             else
+              puts "Failed Saving. Error: #{newContact.errors.full_messages}"
               result[:new][:failed] << newContact.record_id
             end
           rescue ActiveRecord::RecordNotUnique => e
