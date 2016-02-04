@@ -16,6 +16,10 @@ class Phone < ActiveRecord::Base
 
   def number=(string)
     self.cc_prefix, num = string.extract_country_code
+    if num.blank? or num.length < 4
+      self.errors[:phone_number] << "Phone number is not valid"
+      return
+    end
     self.encrypted_number = num.encrypt(:symmetric)
     self.encrypted_number
   end

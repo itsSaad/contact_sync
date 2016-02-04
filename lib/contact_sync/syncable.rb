@@ -13,6 +13,8 @@ module ContactSync
     def complete_phone_number
       if self.cc_prefix.blank?
         "00#{self.phone_number}"
+      elsif self.cc_prefix == "0"
+        "#{self.cc_prefix}#{self.phone_number}"
       else
         "+#{self.cc_prefix}#{self.phone_number}"
       end
