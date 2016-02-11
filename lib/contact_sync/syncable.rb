@@ -68,6 +68,16 @@ module ContactSync
         modified_contacts.each do |con|
           theContact = self.contacts.find_by_record_id(con[:record_id])
           if ! theContact.blank?
+            #lets create phone_numbers that have been added in this contact.
+            phones = con[:phones]
+            phones.each do |ph|
+              binding.pry
+              found_phone = theContact.phones.where(encrypted_number: ph[:number].extract_country_code[-1].encrypt(:symmetric)).limit(1).first
+              binding.pry
+              if !found_phone
+                theContact.phones.create(phone_params(ph))
+              end
+            end
             if !theContact.update_attributes(contact_params(con))
               result[:modified][:failed] << theContact.record_id
             else
