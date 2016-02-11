@@ -7,3 +7,180 @@
   [1m[36m (0.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
   [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
   [1m[36m (0.8ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateContactSyncSchema (20150520065844)
+  [1m[35m (0.1ms)[0m  begin transaction
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in up at /Users/SM/Developer/Personal/RoR/con_sync/spec/dummy/db/migrate/20150520065844_create_contact_sync_schema.rb:21)
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "contacts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "composite_name" varchar, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "prefix" varchar, "suffix" varchar, "nickname" varchar, "organization" varchar, "job_title" varchar, "department" varchar, "birthdate" date, "note" text, "device_id" varchar, "record_id" integer DEFAULT 0, "creation_date" datetime, "modification_date" datetime, "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in up at /Users/SM/Developer/Personal/RoR/con_sync/spec/dummy/db/migrate/20150520065844_create_contact_sync_schema.rb:31)
+  [1m[35m (0.2ms)[0m  CREATE TABLE "phones" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "label" varchar, "encrypted_number" varchar, "cc_prefix" varchar, "extension" varchar, "contact_id" integer, "created_at" datetime, "updated_at" datetime) 
+DEPRECATION WARNING: `#timestamp` was called without specifying an option for `null`. In Rails 5, this behavior will change to `null: false`. You should manually specify `null: true` to prevent the behavior of your existing migrations from changing. (called from block in up at /Users/SM/Developer/Personal/RoR/con_sync/spec/dummy/db/migrate/20150520065844_create_contact_sync_schema.rb:39)
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "emails" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "label" varchar, "encrypted_email" varchar, "contact_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "email" varchar, "encrypted_number" varchar, "cc_prefix" varchar, "last_contact_sync" datetime) 
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_users_on_encrypted_number" ON "users" ("encrypted_number")
+  [1m[36m (1.3ms)[0m  [1mCREATE UNIQUE INDEX "unique_device_contact" ON "contacts" ("record_id", "device_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='unique_device_contact' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='unique_device_contact' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_contacts_on_user_id" ON "contacts" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_phones_on_encrypted_number" ON "phones" ("encrypted_number")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_emails_on_encrypted_email" ON "emails" ("encrypted_email")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150520065844"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+Migrating to RemoveDeviceIdFromContacts (20150529072537)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TEMPORARY TABLE "acontacts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "composite_name" varchar, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "prefix" varchar, "suffix" varchar, "nickname" varchar, "organization" varchar, "job_title" varchar, "department" varchar, "birthdate" date, "note" text, "device_id" varchar, "record_id" integer DEFAULT 0, "creation_date" datetime, "modification_date" datetime, "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='unique_device_contact' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='unique_device_contact' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_acontacts_on_user_id" ON "acontacts" ("user_id")
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "tunique_device_contact" ON "acontacts" ("record_id", "device_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "contacts"
+  [1m[36m (0.4ms)[0m  [1mDROP TABLE "contacts"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "contacts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "composite_name" varchar, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "prefix" varchar, "suffix" varchar, "nickname" varchar, "organization" varchar, "job_title" varchar, "department" varchar, "birthdate" date, "note" text, "record_id" integer DEFAULT 0, "creation_date" datetime, "modification_date" datetime, "user_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tunique_device_contact' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tunique_device_contact' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_acontacts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_acontacts_on_user_id' AND type='index'
+
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "unique_device_contact" ON "contacts" ("record_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='unique_device_contact' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='unique_device_contact' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_contacts_on_user_id" ON "contacts" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "acontacts"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "acontacts"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='unique_device_contact' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='unique_device_contact' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  DROP INDEX "unique_device_contact"
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "index_contacts_on_user_id_and_record_id" ON "contacts" ("user_id", "record_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20150529072537"]]
+  [1m[35m (1.6ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id_and_record_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id_and_record_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_emails_on_encrypted_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_emails_on_encrypted_email' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_phones_on_encrypted_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_phones_on_encrypted_number' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_encrypted_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_encrypted_number' AND type='index'
+
+  [1m[36m (1.1ms)[0m  [1mCREATE TABLE "contacts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "composite_name" varchar, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "prefix" varchar, "suffix" varchar, "nickname" varchar, "organization" varchar, "job_title" varchar, "department" varchar, "birthdate" date, "note" text, "record_id" integer DEFAULT 0, "creation_date" datetime, "modification_date" datetime, "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.2ms)[0m  select sqlite_version(*)
+  [1m[36m (1.2ms)[0m  [1mCREATE UNIQUE INDEX "index_contacts_on_user_id_and_record_id" ON "contacts" ("user_id", "record_id")[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_contacts_on_user_id_and_record_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_contacts_on_user_id_and_record_id' AND type='index'
+
+  [1m[36m (1.1ms)[0m  [1mCREATE  INDEX "index_contacts_on_user_id" ON "contacts" ("user_id")[0m
+  [1m[35m (1.0ms)[0m  CREATE TABLE "emails" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "label" varchar, "encrypted_email" varchar, "contact_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.9ms)[0m  [1mCREATE  INDEX "index_emails_on_encrypted_email" ON "emails" ("encrypted_email")[0m
+  [1m[35m (1.0ms)[0m  CREATE TABLE "phones" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "label" varchar, "encrypted_number" varchar, "cc_prefix" varchar, "extension" varchar, "contact_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (1.1ms)[0m  [1mCREATE  INDEX "index_phones_on_encrypted_number" ON "phones" ("encrypted_number")[0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "middle_name" varchar, "last_name" varchar, "email" varchar, "encrypted_number" varchar, "cc_prefix" varchar, "last_contact_sync" datetime) 
+  [1m[36m (1.4ms)[0m  [1mCREATE  INDEX "index_users_on_encrypted_number" ON "users" ("encrypted_number")[0m
+  [1m[35m (1.2ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar NOT NULL) 
+  [1m[36m (2.6ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.2ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (1.4ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150529072537')[0m
+  [1m[35m (1.6ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150520065844')
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "users" ("first_name", "last_name") VALUES (?, ?)[0m  [["first_name", "Saad"], ["last_name", "Masood"]]
+  [1m[35m (6.1ms)[0m  commit transaction
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35mContact Load (0.2ms)[0m  SELECT "contacts".* FROM "contacts" WHERE "contacts"."user_id" = ?  [["user_id", 1]]

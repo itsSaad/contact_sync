@@ -4,6 +4,8 @@ require File.expand_path('spec/dummy/config/environment')
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'factory_girl_rails'
+require 'database_cleaner'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'contact_sync'
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -25,9 +27,33 @@ require 'contact_sync'
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+EncryptedStrings::SymmetricCipher.default_algorithm = 'aes-256-cbc'
+EncryptedStrings::SymmetricCipher.default_password = 'dkljf84fklj09wfkj09rj0cnwjer09c2u3hf9w8nfiojesdpsfpcndsfjs'
+
+
 RSpec.configure do |config|
+  #FactoryGirl setup
+  config.include FactoryGirl::Syntax::Methods
+  #Run FactoryGirl.lint for factory errors.
+  config.before(:suite) do
+    begin
+      DatabaseCleaner.start
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+      FactoryGirl.lint
+    ensure
+      DatabaseCleaner.clean
+    end
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

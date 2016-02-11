@@ -27,5 +27,10 @@ module TestApp
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+
+    EncryptedStrings::SymmetricCipher.default_algorithm = 'aes-256-cbc'
+    EncryptedStrings::SymmetricCipher.default_password = 'dkljf84fklj09wfkj09rj0cnwjer09c2u3hf9w8nfiojesdpsfpcndsfjs'
+
   end
 end
