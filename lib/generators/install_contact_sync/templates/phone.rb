@@ -20,12 +20,13 @@ class Phone < ActiveRecord::Base
 
   def complete_phone_number
     if self.cc_prefix.blank?
-      "0#{self.number}"
+      "00#{self.phone_number}"
+    elsif self.cc_prefix == "0"
+      "#{self.cc_prefix}#{self.phone_number}"
     else
-      "+#{self.cc_prefix}#{self.number}"
+      "+#{self.cc_prefix}#{self.phone_number}"
     end
   end
-
 
   def save_with_format!
     save_with_format

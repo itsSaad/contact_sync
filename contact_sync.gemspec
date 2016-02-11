@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency 'global_phone', '1.0.1'
@@ -23,5 +23,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'pry-rails'
 
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec", "~> 3.4"
+  s.add_development_dependency "rspec-rails", "~> 3.4"
 end
