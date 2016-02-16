@@ -1,10 +1,9 @@
 PATH
   remote: .
   specs:
-    contact_sync (1.4.9)
+    contact_sync (1.5.0)
       encrypted_strings (= 0.3.3)
       global_phone (= 1.0.1)
-      pry-rails
       rails (>= 4.0.0)
 
 GEM
@@ -167,6 +166,7 @@ DEPENDENCIES
   database_cleaner
   factory_girl_rails
   guard
+  pry-rails
   rspec-rails (~> 3.4)
   sqlite3
 

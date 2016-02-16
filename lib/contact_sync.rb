@@ -5,7 +5,6 @@ require 'contact_sync/util/global_phone'
 require 'contact_sync/acts_as_syncable'
 require 'contact_sync/syncable'
 require 'encrypted_strings'
-require 'pry-rails'
 
 module ContactSync
 end
