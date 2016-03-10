@@ -91,7 +91,7 @@ module ContactSync
       if !contact_hash[:deleted].blank?
         delete_contacts = contact_hash[:deleted]
         delete_contacts.each do |con|
-          if self.contacts.find_by_record_id(con[:record_id].to_i).destroy
+          if self.contacts.find_by_record_id(con[:record_id].to_i) and self.contacts.find_by_record_id(con[:record_id].to_i).destroy
             # result[:deleted][:success] << con[:record_id]
           else
             result[:deleted][:failed] << con[:record_id]
